@@ -11,6 +11,8 @@ enum ServiceState {
   failed,
 }
 
+T svc<T extends Service>({bool quiet = false}) => services().get(quiet: quiet);
+
 typedef ServiceConstructor<T extends Service> = T Function();
 
 ServiceProvider? _serviceProvider;
@@ -45,8 +47,12 @@ class ServiceProvider {
     }
   }
 
-  T get<T extends Service>() {
+  T get<T extends Service>({bool quiet = false}) {
     T t = getQuiet();
+
+    if (quiet) {
+      return t;
+    }
 
     if (t.state == ServiceState.offline || t.state == ServiceState.failed) {
       t.startService();

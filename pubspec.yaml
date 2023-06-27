@@ -1,6 +1,6 @@
 name: serviced
 description: Basic Service Management
-version: 1.0.0
+version: 1.0.1
 homepage: https://github.com/ArcaneArts/service
 environment:
   sdk: '>=3.0.5 <4.0.0'
