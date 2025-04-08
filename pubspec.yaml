@@ -1,9 +1,9 @@
 name: serviced
 description: Basic Service Management
-version: 1.0.1
+version: 1.0.3
 homepage: https://github.com/ArcaneArts/service
 environment:
   sdk: '>=3.0.5 <4.0.0'
 dependencies:
-  fast_log: ^1.0.5
-  precision_stopwatch: ^1.0.2
+  fast_log: ">=1.0.5 <2.0.0"
+  precision_stopwatch: ">=1.0.2 <2.0.0"

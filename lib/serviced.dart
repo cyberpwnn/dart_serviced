@@ -1,7 +1,37 @@
 library serviced;
 
+import 'dart:collection';
+
 import 'package:fast_log/fast_log.dart';
 import 'package:precision_stopwatch/precision_stopwatch.dart';
+
+Queue<InitTask> _initTasks = Queue();
+
+void $registerInitTask(InitTask task) => _initTasks.add(task);
+
+class InitTask {
+  final String name;
+  final Future<void> Function() run;
+
+  InitTask(this.name, this.run);
+
+  Future<void> call() async {
+    PrecisionStopwatch p = PrecisionStopwatch.start();
+    await run();
+    info("[INIT]: $name in ${p.getMilliseconds().floor()}ms");
+  }
+}
+
+Future<void> $executeInitTasks() async {
+  PrecisionStopwatch p = PrecisionStopwatch.start();
+  List<InitTask> r = _initTasks.toList();
+  _initTasks.clear();
+  await Future.wait(r.map((e) => e()));
+  if (r.isNotEmpty) {
+    success(
+        "[INIT]: Completed ${r.length} in ${p.getMilliseconds().toStringAsPrecision(2)}ms (wall clock)");
+  }
+}
 
 enum ServiceState {
   offline,
